@@ -1,3 +1,15 @@
 {
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "files.associations": {
+        "string.h": "c",
+        "stdint.h": "c",
+        "stdlib.h": "c",
+        "global.h": "c",
+        "unistd.h": "c",
+        "stdio.h": "c",
+        "array": "c",
+        "string": "c",
+        "random": "c",
+        "time.h": "c"
+    }
 }

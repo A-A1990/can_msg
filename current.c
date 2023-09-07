@@ -1,81 +1,119 @@
-#include <stdio.h>
-#include <stdint.h>
-#define BMS_critical_lower_bounds 0x100
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <time.h>
+// #include <unistd.h>
+// #include <stdint.h>
 
-#define BMS_critical_upper_bounds 0x127
+// struct can_data_1B
+// {
+//   uint16_t address;
+//   uint8_t data[1];
+// };
 
-#define BMS_low_lower_bounds 0x340
-#define BMS_low_upper_bounds 0x396
+// struct can_data_4B
+// {
+//   uint16_t address;
+//   uint8_t data[4];
+// };
 
-struct can_data {
-  uint16_t addres;
-  uint8_t data[8];
-  
-};
+// struct BMS_critical_msg
+// {
+//   struct can_data_1B Highest_temp;
+//   struct can_data_1B Highest_Thermistor_ID;
+//   struct can_data_1B Lowest_temp;
+//   struct can_data_1B Voltage;
+//   struct can_data_1B Current;
+// };
 
-struct can_data M126,M100,M110;
+// struct VariableMapping
+// {
+//   uint16_t address;
+//   void *variable;
+// };
 
+// int main()
+// {
+//   // Create an instance of the BMS_critical_msg structure
+//   struct BMS_critical_msg bmsMsg;
 
+//   // Set the addresses for the variables
+//   bmsMsg.Highest_temp.address = 0x100;
+//   bmsMsg.Highest_Thermistor_ID.address = 0x200;
+//   bmsMsg.Lowest_temp.address = 0x300;
+//   bmsMsg.Voltage.address = 0x400;
+//   bmsMsg.Current.address = 0x500;
 
-int count[9] = {0};
-int sum  [9] = {0};
+//   // Set some initial constant values for the variables
+//   bmsMsg.Highest_temp.data[0] = 0;
+//   bmsMsg.Highest_Thermistor_ID.data[0] = 0;
+//   bmsMsg.Lowest_temp.data[0] = 0;
 
+//   bmsMsg.Voltage.data[0] = 0;
+//   bmsMsg.Current.data[0] = 0;
 
+//   // Create an array of VariableMapping to map addresses to variables
+//   struct VariableMapping variableMappings[] = {
+//       // Variables that change during each iteration
+//       {bmsMsg.Highest_temp.address, &(bmsMsg.Highest_temp)},
+//       {bmsMsg.Highest_Thermistor_ID.address, &(bmsMsg.Highest_Thermistor_ID)},
 
+//       // Constant variables
+//       {bmsMsg.Lowest_temp.address, &(bmsMsg.Lowest_temp)},
+//       {bmsMsg.Voltage.address, &(bmsMsg.Voltage)},
+//       {bmsMsg.Current.address, &(bmsMsg.Current)}
 
-double calculateAverage(int numbers, int count) {
-    
-    
-    return (double)numbers / count;
-}
+//   };
 
+//   // Set the random seed
+//   srand(time(NULL));
+//   int index = 0;
+//   int counter = 0;
+//   while (1)
+//   {
+//     index = rand() % 6;
+//     // Simulate random inputs for the variables that change during each iteration
+//     for (size_t j = 0; j < index; ++j)
+//     {
+//       index = rand() % 6;
+//       // Generate a random data
+//       uint8_t receivedData = rand() % 0xFF;
 
+//       // Cast the variable pointer to the appropriate structure type
+//       struct can_data_1B *variable = (struct can_data_1B *)(variableMappings[index].variable);
 
-int main() {
-    uint8_t Recived[] = {0x45,0x8d,0x5e,0xf0,0xc7,0x65}; 
-    int length = sizeof(Recived) / sizeof(Recived[0]);
-    int number;        // Variable to store the entered number
-    double FirstNum=0 , SecondNum=0;
-    printf("Enter integers (enter a non-integer value to stop):\n");
-    
+//       // Assign the received data to the appropriate variable
+//       variable->data[0] = receivedData;
+//     }
 
+//     // Print the final values of all the variables
+//     printf("Highest_temp: %d\n", bmsMsg.Highest_temp.data[0]);
+//     printf("Highest_Thermistor_ID: %d\n", bmsMsg.Highest_Thermistor_ID.data[0]);
+//     printf("Lowest_temp: %d %d %d %d\n",
+//            bmsMsg.Lowest_temp.data[0],
+//            bmsMsg.Lowest_temp.data[1],
+//            bmsMsg.Lowest_temp.data[2],
+//            bmsMsg.Lowest_temp.data[3]);
+//     printf("Voltage: %d\n", bmsMsg.Voltage.data[0]);
+//     printf("Current: %d\n", bmsMsg.Current.data[0]);
+//     counter++;
+//     if (counter == 10)
+//     {
+//       // Clear the data
+//       bmsMsg.Highest_temp.data[0] = 0;
+//       bmsMsg.Highest_Thermistor_ID.data[0] = 0;
+//       bmsMsg.Lowest_temp.data[0] = 0;
+//       bmsMsg.Lowest_temp.data[1] = 0;
+//       bmsMsg.Lowest_temp.data[2] = 0;
+//       bmsMsg.Lowest_temp.data[3] = 0;
+//       bmsMsg.Voltage.data[0] = 0;
+//       bmsMsg.Current.data[0] = 0;
 
+//       // Reset the counter
+//       counter = 0;
+//     }
+//     // Wait for 1 second
+//     sleep(1);
+//   }
 
-    while (scanf("%d", &number) == 1) {
-        
-        switch(number){
-            case 0x100:
-            
-            
-            for (int i = 0; i < length; i++) {
-                
-                M100.data[i]=Recived[i];
-                printf("%x\n",M100.data[i]);
-            }
-            
-            break;
-            
-            case 0x126:
-            
-            for (int i = 0; i < 8; i++) {
-                M126.data[i]=Recived[i];
-                printf("%f \n",M126.data[i]);
-            }
-            
-            break;
-            
-            default:
-            printf("de");
-            
-        }
-        
-        
-        
-        
-        
-    }
-    
-    
-    return 0;
-}
-
+//   return 0;
+// }

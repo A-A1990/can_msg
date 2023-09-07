@@ -1,0 +1,9 @@
+# hex_array = [hex(i) for i in range(0x100, 0x131)]
+# c_array = "{" + ", ".join(hex_array) + "}"
+# print(c_array)
+
+
+for i in range(34):
+    print("%02x",end=" ")
+    if (i+1) % 6 == 0:
+        print()
